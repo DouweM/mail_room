@@ -2,21 +2,16 @@ module MailRoom
   # Wraps configuration for a set of individual mailboxes with global config
   # @author Tony Pitale
   class Configuration
-    attr_accessor :mailboxes, :daemonize, :log_path, :pid_path, :quiet
+    attr_accessor :mailboxes, :daemonize, :log_path, :pid_path
 
     # Initialize a new configuration of mailboxes
     def initialize(options={})
       self.mailboxes = []
-      self.quiet = options.fetch(:quiet, false)
 
       if options.has_key?(:config_path)
-        begin
-          config_file = YAML.load_file(options[:config_path])
+        config_file = YAML.load_file(options[:config_path])
 
-          set_mailboxes(config_file[:mailboxes])
-        rescue => e
-          raise e unless quiet
-        end
+        set_mailboxes(config_file[:mailboxes])
       end
     end
 
